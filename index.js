@@ -122,6 +122,8 @@ server.on('error', (err) => {
 server.listen(8081, () => {
   console.log('server bound');
 });
+
+
 /*
 const db = mysql.createConnection({
   host : 'localhost',
@@ -136,41 +138,4 @@ db.connect((err) => {
   }
   console.log("in like flynn");
 })
-*/
-
-
-
-
-
-
-/*
-
-
-
-
-app.post('/creatergbprofile', (req,res) => {
-
-  res.status(200).send({
-      lul: 'lullers dude',
-      size:'large'
-  })
-})
-
-app.post('/setlightparams/:id', (req,res) => {
-  res.status(200).send({
-      lul: 'lullers dude',
-      size:'large'
-  })
-})
-
-app.get('/status/:id', (req,res) => {
-  res.status(200).send({
-      lul: 'lullers dude',
-      size:'large'
-  })
-})
-
-/*
-
-
 */
