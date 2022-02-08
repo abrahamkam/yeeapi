@@ -14,14 +14,19 @@ app.use(cors());
 app.get('/', function(req, res){
   res.sendFile(path.join(__dirname,'build', 'index.html'))
 })
-profiles = [{"name":"Warm","brightness":100,"temperature":1700},{"name":"Nap","brightness":20,"temperature":1700},{"name":"Harsh","brightness":100,"temperature":5000}]
+profiles = [
+  {"name":"Firelight","brightness":100,"temperature":1700,
+  "image":'https://pbs.twimg.com/media/D8BRDEDWsAInrYe.png'},
+   {"name":"Nap","brightness":20,"temperature":1700,"image":'https://img.freepik.com/free-vector/pixel-art-moon-icon_41992-1203.jpg?size=338&ext=jpg'},
+   {"name":"Harsh","brightness":100,"temperature":5000,
+    "image":'https://images.squarespace-cdn.com/content/v1/551a19f8e4b0e8322a93850a/1529105713123-9Q3OJ9SYBUN78ESS81PR/Intro_Image.png'}]
 app.get('/profiles', cors(), function(req, res){
   res.json(profiles)
 })
 
 app.listen(
   PORT,
-  ()=> console.log(`it's alive on http://localhost:${PORT}`)
+  ()=> console.log(`Primary interface alive on:${PORT}`)
 
 )
 
@@ -39,11 +44,10 @@ app.post('/createwhiteprofile/', (req,res) => {
   client.pipe(client);
 
   res.status(200).send({
-      lul: 'lullers dude',
-      size:'large'
+      confirm: 'White light profile created'
   })
 })
-
+/*
 app.post('/createwhiteprofile', (req,res) => {
 
   console.log(req.body)
@@ -62,8 +66,8 @@ app.post('/createwhiteprofile', (req,res) => {
 
   })
 })
-
-app.post('/shutdown', (req,res) => {
+*/
+app.post('/shutdown',cors(), (req,res) => {
 
   console.log(req.body)
 
