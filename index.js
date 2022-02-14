@@ -99,7 +99,7 @@ server.listen(8081, () => {
 });
 
 const db = mysql.createConnection({
-  host : 'host.docker.internal',
+  host : 'localhost',
   user : 'root',
   password : 'password',
   database: 'yeeapi',
