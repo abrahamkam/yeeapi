@@ -14,6 +14,7 @@ app.use(cors());
 app.get('/', function(req, res){
   res.sendFile(path.join(__dirname,'build', 'index.html'))
 })
+//Default profiles in case database profile retrieval fails
 profiles = [
   {"name":"Firelight","brightness":100,"temperature":1700,
   "image":'https://pbs.twimg.com/media/D8BRDEDWsAInrYe.png'},
@@ -47,26 +48,7 @@ app.post('/createwhiteprofile/', (req,res) => {
       confirm: 'White light profile created'
   })
 })
-/*
-app.post('/createwhiteprofile', (req,res) => {
 
-  console.log(req.body)
-  const {id} = req.body;
-  const {brightness} = req.body;
-  const {temperature} = req.body;
-  const {fluidity} = req.body;
-
-  console.log("Profile created with values ID:"+id+" Brightness:"+brightness+" temp: "+temperature+" Fluidity:"+fluidity);
-
-  client.write('WHITEPARAMCOMMAND:'+brightness+":"+temperature+":"+fluidity+'\r\n');
-  client.pipe(client);
-
-  res.status(201).send({
-      confirm: 'White light parameters set'
-
-  })
-})
-*/
 app.post('/shutdown',cors(), (req,res) => {
 
   console.log(req.body)
@@ -95,17 +77,6 @@ app.post('/turnon', (req,res) => {
   })
 })
 
-app.get('/profiles', (req,res) => {
-
-  console.log(req.body)
-
-  console.log("Frontend requested profiles");
-
-  res.status(200).send({
-      confirm: 'turn on order received'
-  })
-})
-
 
 const net = require('net');
 const server = net.createServer((c) => {
@@ -127,12 +98,11 @@ server.listen(8081, () => {
   console.log('server bound');
 });
 
-
-/*
 const db = mysql.createConnection({
-  host : 'localhost',
+  host : 'host.docker.internal',
   user : 'root',
   password : 'password',
+  database: 'yeeapi',
   insecureAuth: true
 })
 
@@ -142,4 +112,41 @@ db.connect((err) => {
   }
   console.log("in like flynn");
 })
-*/
+
+app.post('/dbsetup', (req,res) =>{
+  var sql = 'CREATE DATABASE yeeapi';
+  db.query(sql, (err, result) => {
+    if(err) throw err;
+    res.send('created')
+  });
+})
+
+app.post('/dbtablesetup',(req,res)=>{
+  var sql = 'CREATE TABLE profiles(name VARCHAR(50), brightness int, temperature int, image VARCHAR(500), PRIMARY KEY (name))';
+  db.query(sql, (err, result) => {
+    if(err) throw err;
+    res.send('created')
+  });
+})
+
+app.get('/getdbprofiles', (req,res) =>{
+  var sql = 'SELECT * FROM profiles';
+  db.query(sql, (err, result) => {
+    if(err) throw err;
+    res.send(result)
+  });
+})
+
+app.post('/insertprofile', (req,res) =>{
+  const {name} = req.body;
+  const {brightness} = req.body;
+  const {temperature} = req.body;
+  const {image} = req.body;
+  var profile = {name:name, brightness:brightness,temperature:temperature, image:image}
+  var sql = 'INSERT INTO profiles SET ?';
+
+  db.query(sql,profile,(err,result) => {
+    if(err) throw err;
+    res.send(result)
+  })
+})
