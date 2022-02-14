@@ -1,1 +1,1 @@
-API with built in frontend for managing my smart-LEDs from anywhere. 
+API for managing my smart-LEDs from anywhere. Currently set up with a built in frontend. 
