@@ -99,7 +99,7 @@ server.listen(8081, () => {
 });
 
 const db = mysql.createConnection({
-  host : 'localhost',
+  host : 'abrahamkam.net',
   user : 'root',
   password : 'password',
   database: 'yeeapi',
