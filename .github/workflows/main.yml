@@ -36,4 +36,4 @@ jobs:
         run: |
           sudo docker stop yeeapi
           sudo docker rm yeeapi
-          sudo docker run -p 8080:8080 -p 8081:8081 yeeapi:latest
+          sudo docker run -p 8080:8080 -p 8081:8081 --name yeeapi yeeapi:1.5
