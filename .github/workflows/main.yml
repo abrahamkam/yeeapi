@@ -28,7 +28,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           port: 22
-          user: ec2-user
+          username: ec2-user
           key: ${{ secrets.YEEAUTO_KEY }}
 
       # Runs a set of commands using the runners shell
