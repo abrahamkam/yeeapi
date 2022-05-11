@@ -24,12 +24,12 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: SSH in
-        uses: appleboy/ssh-action@v0.1.4
+        uses: invi5H/ssh-action@v1
         with:
-          host: ${{ secrets.SSH_HOST }}
-          port: 22
-          username: ec2-user
-          key: ${{ secrets.YEEAUTO_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: 22
+          SSH_USER: ec2-user
+          SSH_KEY: ${{ secrets.YEEAUTO_KEY }}
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
