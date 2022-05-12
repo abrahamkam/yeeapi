@@ -31,10 +31,11 @@ jobs:
         username: ec2-user
         key: ${{ secrets.YEEAUTO_KEY }}
         script: | 
+            sudo docker pull yeeapi:latest
             sudo docker ps -a
             sudo docker stop yeeapi
             sudo docker rm yeeapi
-            sudo docker run -p 8080:8080 -p 8081:8081 --name yeeapi yeeapi:1.5
+            sudo docker run -p 8080:8080 -p 8081:8081 --name yeeapi -d yeeapi:latest
 
         
       
