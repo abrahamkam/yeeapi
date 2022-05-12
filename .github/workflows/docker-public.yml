@@ -21,7 +21,7 @@ jobs:
       run: | 
         docker build -t abrahamkam/yeeapi:latest .
         docker images
-        docker login 
+        docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
         docker push abrahamkam/yeeapi:latest
 
         
