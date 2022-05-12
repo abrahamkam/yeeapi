@@ -22,6 +22,19 @@ jobs:
         docker build -t abrahamkam/yeeapi:latest .
         docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
         docker push abrahamkam/yeeapi:latest
+        
+    - name: SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: 22
+        username: ec2-user
+        key: ${{ secrets.YEEAUTO_KEY }}
+        script: | 
+            sudo docker ps -a
+            sudo docker stop yeeapi
+            sudo docker rm yeeapi
+            sudo docker run -p 8080:8080 -p 8081:8081 --name yeeapi yeeapi:1.5
 
         
       
