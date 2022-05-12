@@ -28,7 +28,6 @@ jobs:
           key: ${{ secrets.YEEAUTO_KEY }}
           script: | 
             sudo dockr pull yeeapi:latest
-            sudo docker ps -a
             sudo docker stop yeeapi
             sudo docker rm yeeapi
             sudo docker run -p 8080:8080 -p 8081:8081 --name yeeapi -d yeeapi:latest
