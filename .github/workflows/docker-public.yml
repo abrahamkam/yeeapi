@@ -20,7 +20,6 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: | 
         docker build -t abrahamkam/yeeapi:latest .
-        docker images
         docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
         docker push abrahamkam/yeeapi:latest
 
