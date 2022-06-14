@@ -13,7 +13,7 @@ app.use(cors());
 
 app.get('/', function(req, res){
   res.sendFile(path.join(__dirname,'build', 'index.html'))
-})
+}) 
 //Default profiles in case database profile retrieval fails
 profiles = [
   {"name":"Firelight","brightness":100,"temperature":1700,
@@ -30,7 +30,7 @@ app.listen(
   ()=> console.log(`Primary interface alive on:${PORT}`)
 
 )
-
+//POST route that creates a white light profile. 
 app.post('/createwhiteprofile/', (req,res) => {
 
   console.log(req.body)
@@ -48,7 +48,7 @@ app.post('/createwhiteprofile/', (req,res) => {
       confirm: 'White light profile created'
   })
 })
-
+//POST endpoint to turn the light off  
 app.post('/shutdown',cors(), (req,res) => {
 
   console.log(req.body)
@@ -62,7 +62,7 @@ app.post('/shutdown',cors(), (req,res) => {
       confirm: 'shutdown order received'
   })
 })
-
+//POST endpoint to turn the light on
 app.post('/turnon', (req,res) => {
 
   console.log(req.body)
@@ -97,7 +97,7 @@ server.on('error', (err) => {
 server.listen(8081, () => {
   console.log('server bound');
 });
-
+//Create the connection to the mysql server. 
 const db = mysql.createConnection({
   host : 'abrahamkam.net',
   user : 'root',
@@ -105,27 +105,28 @@ const db = mysql.createConnection({
   database: 'yeeapi',
   insecureAuth: true
 })
-
+//Connection to the database plus actions that are executed upon connection with the SQL database.
+//Creates the database and table that will store the light profiles upon connection, thus setting up the SQL server for use. 
 db.connect((err) => {
   if(err){
     throw err;
   }
+  db.query('CREATE DATABASE yeeapi', (err, result) => {
+    if(err) throw err;
+  });
+
+  db.query('CREATE TABLE profiles(name VARCHAR(50), brightness int, temperature int, image VARCHAR(500), PRIMARY KEY (name))', (err, result) => {
+    if(err) throw err;
+  });
   console.log("in like flynn");
 })
 
-app.post('/dbsetup', (req,res) =>{
-  var sql = 'CREATE DATABASE yeeapi';
-  db.query(sql, (err, result) => {
-    if(err) throw err;
-    res.send('created')
-  });
-})
 
 app.post('/dbtablesetup',(req,res)=>{
   var sql = 'CREATE TABLE profiles(name VARCHAR(50), brightness int, temperature int, image VARCHAR(500), PRIMARY KEY (name))';
   db.query(sql, (err, result) => {
     if(err) throw err;
-    res.send('created')
+    res.send('table created')
   });
 })
 
@@ -149,4 +150,13 @@ app.post('/insertprofile', (req,res) =>{
     if(err) throw err;
     res.send(result)
   })
+})
+
+//
+app.post('/dbsetup', (req,res) =>{
+  var sql = 'CREATE DATABASE yeeapi';
+  db.query(sql, (err, result) => {
+    if(err) throw err;
+    res.send('created')
+  });
 })
