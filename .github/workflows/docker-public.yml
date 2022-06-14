@@ -1,0 +1,40 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: | 
+        docker build -t abrahamkam/yeeapi:latest .
+        docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+        docker push abrahamkam/yeeapi:latest
+        
+    - name: SSH and deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: 22
+        username: ec2-user
+        key: ${{ secrets.YEEAUTO_KEY }}
+        script: | 
+            sudo docker pull abrahamkam/yeeapi:latest
+            sudo docker stop yeeapi
+            sudo docker rm yeeapi
+            sudo docker run -p 8080:8080 -p 8081:8081 --name yeeapi -d abrahamkam/yeeapi:latest
+
+        
+      
