@@ -111,10 +111,10 @@ db.connect((err) => {
   if(err){
     throw err;
   }
-  db.query('CREATE DATABASE yeeapi', (err, result) => {
+ /* db.query('CREATE DATABASE yeeapi', (err, result) => {
     if(err) throw err;
   });
-
+*/
   db.query('CREATE TABLE profiles(name VARCHAR(50), brightness int, temperature int, image VARCHAR(500), PRIMARY KEY (name))', (err, result) => {
     if(err) throw err;
   });
