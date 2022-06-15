@@ -121,7 +121,7 @@ db.connect((err) => {
   console.log("in like flynn");
 })
 
-
+//POST endpoint to set up the default database table if it doesn't exist already
 app.post('/dbtablesetup',(req,res)=>{
   var sql = 'CREATE TABLE profiles(name VARCHAR(50), brightness int, temperature int, image VARCHAR(500), PRIMARY KEY (name))';
   db.query(sql, (err, result) => {
@@ -129,7 +129,7 @@ app.post('/dbtablesetup',(req,res)=>{
     res.send('table created')
   });
 })
-
+//GET endpoint to retrieve a list of database profiles
 app.get('/getdbprofiles', (req,res) =>{
   var sql = 'SELECT * FROM profiles';
   db.query(sql, (err, result) => {
@@ -137,7 +137,11 @@ app.get('/getdbprofiles', (req,res) =>{
     res.send(result)
   });
 })
-
+//POST endpoint allowing the creation of a white light profile in the database. 
+//{name} = the name of the profile
+//{brightness} = the % brightness the lamp should be on, ranging from 0% to 100%. 
+//{temperature} a Kelvin temperature value ranging from 1700 to 6500, with higher temperatures unintuitively meaning colder light. 
+//{image} being the image used in the UI for the created profile.
 app.post('/insertprofile', (req,res) =>{
   const {name} = req.body;
   const {brightness} = req.body;
@@ -152,11 +156,11 @@ app.post('/insertprofile', (req,res) =>{
   })
 })
 
-//
+//POST endpoint to create the default database if it doesn't exist yet. 
 app.post('/dbsetup', (req,res) =>{
   var sql = 'CREATE DATABASE yeeapi';
   db.query(sql, (err, result) => {
-    if(err) throw err;
+    if(err) console.log("Database creation through endpoint failed");
     res.send('created')
   });
 })
