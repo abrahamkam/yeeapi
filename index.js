@@ -125,7 +125,7 @@ db.connect((err) => {
 app.post('/dbtablesetup',(req,res)=>{
   var sql = 'CREATE TABLE profiles(name VARCHAR(50), brightness int, temperature int, image VARCHAR(500), PRIMARY KEY (name))';
   db.query(sql, (err, result) => {
-    if(err) throw err;
+    if(err) console.log("Failure creating base table");
     res.send('table created')
   });
 })
