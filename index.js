@@ -116,7 +116,7 @@ db.connect((err) => {
   });
 */
   db.query('CREATE TABLE profiles(name VARCHAR(50), brightness int, temperature int, image VARCHAR(500), PRIMARY KEY (name))', (err, result) => {
-    if(err) throw err;
+    if(err) console.log("Failure creating base table");
   });
   console.log("in like flynn");
 })
